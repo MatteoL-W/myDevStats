@@ -1,14 +1,14 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <Profile username="MatteoL-W"></Profile>
+  <ProfileStats username="MatteoL-W"></ProfileStats>
 </template>
 
 <script>
-import Profile from '@/components/Profile.vue'
+import ProfileStats from '@/components/ProfileStats.vue'
 
 export default {
   name: 'App',
-  components: { Profile },
+  components: { ProfileStats },
 }
 </script>
 
