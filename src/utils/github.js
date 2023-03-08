@@ -9,7 +9,6 @@ const countCommits = async function (
   )
 
   const link = response.headers.link
-
   // We get the page number generated in the header response in order to have the commits number
   // This trick let us have more than the last 30 results
   return link.split(',')[1].match(/.*page=(?<page_num>\d+)/).groups.page_num
