@@ -9,6 +9,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+@import '@/assets/scss/variables.scss';
+
 a {
   overflow: hidden;
   position: relative;
@@ -21,7 +24,7 @@ a {
   color: black;
   font-weight: bold;
 
-  border-radius: 10px;
+  border-radius: $inputBorderRadius;
 }
 
 a::before {
@@ -30,7 +33,7 @@ a::before {
   top: -10%;
   left: 10%;
 
-  background-image: url('@/assets/github-mark.svg');
+  background-image: url('@/assets/img/github-mark.svg');
   background-repeat: no-repeat;
   width: 60px;
   height: 60px;

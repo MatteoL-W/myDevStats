@@ -14,9 +14,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 body {
-  background-image: url("@/assets/triangles_pattern.png");
+  background-image: url("@/assets/img/triangles_pattern.png");
   font-family: 'Inter', sans-serif;
 }
 

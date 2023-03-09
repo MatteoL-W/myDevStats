@@ -12,6 +12,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+@import '@/assets/scss/variables.scss';
+
 div {
   display: flex;
   justify-content: space-between;
@@ -21,7 +24,7 @@ div {
 
   input {
     border: 0;
-    border-radius: 10px;
+    border-radius: $inputBorderRadius;
     outline: none;
     font-style: italic;
     padding: 10px;
@@ -31,7 +34,7 @@ div {
   span {
     display: block;
     background-color: #74A3FF;
-    border-radius: 10px;
+    border-radius: $inputBorderRadius;
     width: 10%;
   }
 }

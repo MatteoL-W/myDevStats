@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@octokit/plugin-paginate-rest": "^6.0.0",
     "core-js": "^3.8.3",
     "octokit": "^2.0.14",
     "vue": "^3.2.13",

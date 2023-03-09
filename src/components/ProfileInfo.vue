@@ -62,7 +62,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$spacing: 20px;
+
+@import '@/assets/scss/variables.scss';
+
 .info {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -71,7 +73,7 @@ $spacing: 20px;
 
   &__data {
     background: white;
-    border-radius: 20px;
+    border-radius: $cardBorderRadius;
     width: 100%;
     display: flex;
     font-weight: bold;
@@ -86,7 +88,7 @@ $spacing: 20px;
     &-github {
       background: white;
       overflow: hidden;
-      border-radius: 20px;
+      border-radius: $cardBorderRadius;
 
       .top {
         height: 100px;
@@ -94,7 +96,7 @@ $spacing: 20px;
         background: #D9D9D9;
 
         > div {
-          padding: 15px;
+          padding: 15px 15px 15px 25px;
         }
       }
 
@@ -106,7 +108,7 @@ $spacing: 20px;
 
     &-generate {
       background: #C0C0C0;
-      border-radius: 20px;
+      border-radius: $cardBorderRadius;
       color: black;
       font-weight: bold;
       text-align: center;
