@@ -1,10 +1,7 @@
 <template>
   <div class="homepage">
     <h1 v-text="'<myDevStats>'"></h1>
-    <div class="homepage__searchbar">
-      <input type="text" placeholder="Enter a GitHub name...">
-      <span></span>
-    </div>
+    <SearchBar></SearchBar>
     <GitHubLogin style="width: 400px"></GitHubLogin>
   </div>
 </template>
@@ -12,10 +9,11 @@
 
 <script>
 import GitHubLogin from '@/components/GitHubLogin.vue'
+import SearchBar from "@/components/SearchBar.vue";
 
 export default {
   name: 'HomePage',
-  components: { GitHubLogin },
+  components: {SearchBar, GitHubLogin },
 }
 </script>
 
@@ -27,30 +25,6 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  &__searchbar {
-    display: flex;
-    justify-content: space-between;
-    width: 400px;
-    margin-bottom: 15px;
-    margin-top: 15px;
-
-    input {
-      border: 0;
-      border-radius: 10px;
-      outline: none;
-      font-style: italic;
-      padding: 10px;
-      width: 80%;
-    }
-
-    span {
-      display: block;
-      background-color: #74A3FF;
-      border-radius: 10px;
-      width: 10%;
-    }
-  }
 }
 
 h1 {

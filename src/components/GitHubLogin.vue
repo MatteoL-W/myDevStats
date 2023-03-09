@@ -19,7 +19,6 @@ a {
 
   background: #74A3FF;
   color: black;
-  text-decoration: none;
   font-weight: bold;
 
   border-radius: 10px;

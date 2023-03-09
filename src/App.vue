@@ -1,13 +1,16 @@
 <template>
-  <HomePage></HomePage>
+  <div class="container">
+    <ProfilePage username-git-hub="MatteoL-W"></ProfilePage>
+  </div>
 </template>
 
 <script>
-import HomePage from '@/page/HomePage.vue'
+import ProfilePage from "@/page/ProfilePage.vue";
 
 export default {
   name: 'App',
-  components: { HomePage },
+  components: {ProfilePage},
+  // ToDo: username-git-hub from routes!
 }
 </script>
 
@@ -17,9 +20,18 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-html, body {
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
 }
 </style>

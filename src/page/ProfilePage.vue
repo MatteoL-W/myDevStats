@@ -1,38 +1,17 @@
 <template>
-  <h1>{{ usernameGitHub }}</h1>
-  <p>{{ user?.bio }}</p>
-  <a :href="user?.blog">{{ user?.blog }}</a>
-  <a :href="user?.html_url">GitHub Profile</a>
-  <a :href="user?.repos_url">Repos</a>
-  <img :src="user?.avatar_url" alt="">
-  <p>Followers : {{ user?.followers }}</p>
-  <p>Following : {{ user?.following }}</p>
+  <HeaderComponent></HeaderComponent>
+  <ProfileInfo :username-git-hub="usernameGitHub"></ProfileInfo>
 </template>
 
 <script>
-import { octokit } from '@/services/api/octokit'
+import HeaderComponent from "@/components/HeaderComponent.vue";
+import ProfileInfo from "@/components/ProfileInfo.vue";
 
 export default {
   name: 'ProfilePage',
+  components: {ProfileInfo, HeaderComponent},
   props: {
-    usernameGitHub: { type: String, required: true },
-  },
-  data: () => {
-    return {
-      user: null,
-    }
-  },
-  created () {
-    this.retrieveUserInfo()
-  },
-  methods: {
-    async retrieveUserInfo () {
-      const request = await octokit.request('GET /users/{username}', {
-        username: this.usernameGitHub,
-      })
-      this.user = await request.data
-      console.log(this.user)
-    },
+    usernameGitHub: {type: String, required: true},
   },
 }
 </script>
