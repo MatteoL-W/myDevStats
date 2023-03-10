@@ -1,7 +1,7 @@
 <template>
   <div class="repo">
     <div class="repo__top">
-      <h2>Last pushed repositories (**)</h2>
+      <h2>Last pushed repositories</h2>
       <div class="repo__top-searchbar">
         <input type="text" placeholder="Find a repo...">
         <span></span>
@@ -18,12 +18,12 @@
           <th>Created at</th>
         </tr>
 
-        <tr v-for="repo in repositories" :key="repo.id">
+        <tr v-for="(repo, index) in repositories" :key="repo.id">
           <td>{{ repo.name }}</td>
-          <td>{{ retrieveCommitsNumber(repo) }}</td>
+          <td>{{ commitsNumber[index] }}</td>
           <td>{{ repo.stargazers_count }}</td>
           <td>{{ repo.language }}</td>
-          <td>{{ new Date(repo.updated_at).toLocaleString()  }}</td>
+          <td>{{ new Date(repo.updated_at).toLocaleString() }}</td>
           <td>{{ new Date(repo.created_at).toLocaleString() }}</td>
         </tr>
 
@@ -46,6 +46,7 @@ export default {
   data: () => {
     return {
       repositories: null,
+      commitsNumber: [],
     }
   },
   created() {
@@ -57,10 +58,13 @@ export default {
         username: this.usernameGitHub,
       })
       this.repositories = response.data
-      console.log(this.repositories)
+      await this.retrieveCommitsNumbers(this.repositories)
     },
-    async retrieveCommitsNumber(repository) {
-      return await countCommits(repository.owner.login, repository.name, repository.default_branch, this.usernameGitHub);
+    async retrieveCommitsNumbers(repositories) {
+      for (const repository of repositories) {
+        const currentRepoCommits = await countCommits(repository.owner.login, repository.name, repository.default_branch, this.usernameGitHub)
+        this.commitsNumber.push(currentRepoCommits)
+      }
     },
   },
 }
@@ -76,6 +80,7 @@ export default {
   background: white;
   border-radius: $inputBorderRadius;
   padding: 10px 20px 10px 20px;
+  box-shadow: $shadowDefault;
 }
 
 .repo__top {
@@ -91,21 +96,22 @@ export default {
     margin-top: 15px;
 
     input {
-      border: 0;
+      border: 1px solid black;
+      box-shadow: $shadowInput;
       border-radius: $inputBorderRadius;
       outline: none;
       font-style: italic;
       padding: 10px;
-      width: 80%;
-      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      width: 85%;
     }
 
     span {
+      border: 1px solid black;
+      box-shadow: $shadowInput;
       display: block;
       background-color: #74A3FF;
       border-radius: $inputBorderRadius;
       width: 10%;
-      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     }
   }
 }

@@ -28,7 +28,8 @@ div {
     outline: none;
     font-style: italic;
     padding: 10px;
-    width: 80%;
+    width: 85%;
+    box-shadow: $shadowDefault;
   }
 
   span {
@@ -36,6 +37,7 @@ div {
     background-color: #74A3FF;
     border-radius: $inputBorderRadius;
     width: 10%;
+    box-shadow: $shadowDefault;
   }
 }
 </style>

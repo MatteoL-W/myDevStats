@@ -74,6 +74,7 @@ export default {
     font-weight: bold;
     align-items: center;
     justify-content: center;
+    box-shadow: $shadowDefault;
   }
 
   &__cards {
@@ -81,9 +82,15 @@ export default {
     flex-direction: column;
 
     &-github {
+      a {
+        color: black;
+        text-decoration: underline;
+      }
+
       background: white;
       overflow: hidden;
       border-radius: $cardBorderRadius;
+      box-shadow: $shadowDefault;
 
       .top {
         height: 100px;
@@ -104,18 +111,15 @@ export default {
     &-generate {
       background: #C0C0C0;
       border-radius: $cardBorderRadius;
+      box-shadow: $shadowDefault;
       color: black;
+
       font-weight: bold;
       text-align: center;
       padding: 20px;
       margin-top: $spacing;
     }
   }
-}
-
-a {
-  color: black;
-  text-decoration: underline;
 }
 
 </style>

@@ -21,4 +21,9 @@ footer {
 b {
   font-weight: 800;
 }
+
+a {
+  text-decoration: underline;
+  color: black;
+}
 </style>
