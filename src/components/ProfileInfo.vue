@@ -1,6 +1,9 @@
 <template>
   <div class="info">
-    <div class="info__data">Data Visualisation</div>
+    <div class="info__data">
+      <!-- ToDo -->
+      Data Visualisation
+    </div>
     <div class="info__cards">
       <div class="info__cards-github">
 
@@ -23,14 +26,6 @@
       <a class="info__cards-generate" href="#">Generate GitHub Card</a>
     </div>
   </div>
-  <!--<h1>{{ user?.name }}</h1>
-  <p>{{ user?.bio }}</p>
-  <a :href="user?.blog">{{ user?.blog }}</a>
-  <a :href="user?.html_url">GitHub Profile</a>
-  <a :href="user?.repos_url">Repos</a>
-  <img :src="user?.avatar_url" alt="">
-  <p>Followers : {{ user?.followers }}</p>
-  <p>Following : {{ user?.following }}</p>-->
 </template>
 
 <script>
@@ -117,4 +112,10 @@ export default {
     }
   }
 }
+
+a {
+  color: black;
+  text-decoration: underline;
+}
+
 </style>

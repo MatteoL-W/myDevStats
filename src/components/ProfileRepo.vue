@@ -1,7 +1,7 @@
 <template>
   <div class="repo">
     <div class="repo__top">
-      <h2>Repositories Owned (**)</h2>
+      <h2>Last pushed repositories (**)</h2>
       <div class="repo__top-searchbar">
         <input type="text" placeholder="Find a repo...">
         <span></span>
@@ -28,6 +28,8 @@
         </tr>
 
       </table>
+
+      <a href="#">Show more</a>
     </div>
   </div>
 </template>
@@ -108,9 +110,18 @@ export default {
   }
 }
 
+.repo__list > a {
+  display: block;
+  width: 100%;
+  color: black;
+  text-align: center;
+  text-decoration: underline;
+}
+
 table {
   border-spacing: 10px;
   width: 100%;
+  margin-bottom: 10px;
 
   tr, td {
     text-align: left;
