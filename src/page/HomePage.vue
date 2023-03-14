@@ -9,17 +9,17 @@
 
 <script>
 import GitHubLogin from '@/components/GitHubLogin.vue'
-import SearchBar from "@/components/SearchBar.vue";
+import SearchBar from '@/components/SearchBar.vue'
 
 export default {
   name: 'HomePage',
-  components: {SearchBar, GitHubLogin },
+  components: { SearchBar, GitHubLogin },
 }
 </script>
 
 <style scoped lang="scss">
 .homepage {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;

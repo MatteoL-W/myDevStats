@@ -1,16 +1,13 @@
 <template>
   <div class="container">
-    <ProfilePage username-git-hub="MatteoL-W"></ProfilePage>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import ProfilePage from "@/page/ProfilePage.vue";
 
 export default {
   name: 'App',
-  components: {ProfilePage},
-  // ToDo: username-git-hub from routes!
 }
 </script>
 

@@ -10,7 +10,7 @@
         <div class="top">
           <img :src="user?.avatar_url" alt="">
           <div>
-            <h2>{{ user?.login }}</h2>
+            <h2>{{ usernameGitHub }}</h2>
             <p>{{ user?.name }}</p>
             <p>Web: <a :href="user?.blog">{{ user?.blog }}</a></p>
           </div>
@@ -23,29 +23,29 @@
         </div>
       </div>
 
-      <a class="info__cards-generate" href="#">Generate GitHub Card</a>
+      <a class="info__cards-generate" :href="usernameGitHub + '/card'">Generate GitHub Card</a>
     </div>
   </div>
 </template>
 
 <script>
-import {octokit} from "@/services/api/octokit";
+import { octokit } from '@/services/api/octokit'
 
 export default {
-  name: "ProfileInfo",
+  name: 'ProfileInfo',
   props: {
-    usernameGitHub: {type: String, required: true},
+    usernameGitHub: { type: String, required: true },
   },
   data: () => {
     return {
       user: null,
     }
   },
-  created() {
+  created () {
     this.retrieveUserInfo()
   },
   methods: {
-    async retrieveUserInfo() {
+    async retrieveUserInfo () {
       const request = await octokit.request('GET /users/{username}', {
         username: this.usernameGitHub,
       })
@@ -62,7 +62,7 @@ export default {
 
 .info {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 2fr;
   gap: $spacing;
   margin-top: 10px;
 
