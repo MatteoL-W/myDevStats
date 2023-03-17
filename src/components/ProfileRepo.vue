@@ -7,64 +7,35 @@
         <span></span>
       </div>
     </div>
-    <div class="repo__list">
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Commits Number</th>
-          <th>Stars Number</th>
-          <th>Language</th>
-          <th>Updated at</th>
-          <th>Created at</th>
-        </tr>
-
-        <tr v-for="(repo, index) in repositories" :key="repo.id">
-          <td>{{ repo.name }}</td>
-          <td>{{ commitsNumber[index] }}</td>
-          <td>{{ repo.stargazers_count }}</td>
-          <td>{{ repo.language }}</td>
-          <td>{{ new Date(repo.updated_at).toLocaleString() }}</td>
-          <td>{{ new Date(repo.created_at).toLocaleString() }}</td>
-        </tr>
-
-      </table>
-
-      <a href="#">Show more</a>
-    </div>
+    <RepoList :repositories="repositories"></RepoList>
+    <a href="#" v-on:click.prevent="retrieveUserRepos">Show more</a>
   </div>
 </template>
 
 <script>
-import {octokit} from "@/services/api/octokit";
-import {countCommits} from "@/utils/github";
+import RepoList from '@/components/RepoList.vue'
+import { retrieveUserRepos } from '@/utils/github'
 
 export default {
-  name: "ProfileRepo",
+  name: 'ProfileRepo',
+  components: { RepoList },
   props: {
-    usernameGitHub: {type: String, required: true},
+    usernameGitHub: { type: String, required: true },
   },
   data: () => {
     return {
-      repositories: null,
-      commitsNumber: [],
+      repositories: [],
+      pageLoaded: 0,
     }
   },
-  created() {
+  created () {
     this.retrieveUserRepos()
   },
   methods: {
-    async retrieveUserRepos() {
-      const response = await octokit.request("GET /users/{username}/repos?type=all&sort=pushed&per_page=5", {
-        username: this.usernameGitHub,
-      })
-      this.repositories = response.data
-      await this.retrieveCommitsNumbers(this.repositories)
-    },
-    async retrieveCommitsNumbers(repositories) {
-      for (const repository of repositories) {
-        const currentRepoCommits = await countCommits(repository.owner.login, repository.name, repository.default_branch, this.usernameGitHub)
-        this.commitsNumber.push(currentRepoCommits)
-      }
+    async retrieveUserRepos () {
+      this.pageLoaded++
+      const response = await retrieveUserRepos(this.usernameGitHub, this.pageLoaded)
+      this.repositories.push(...response)
     },
   },
 }
@@ -81,6 +52,15 @@ export default {
   border-radius: $inputBorderRadius;
   padding: 10px 20px 10px 20px;
   box-shadow: $shadowDefault;
+
+  a {
+    display: block;
+    width: 100%;
+    color: black;
+    text-align: center;
+    text-decoration: underline;
+  }
+
 }
 
 .repo__top {
@@ -113,24 +93,6 @@ export default {
       border-radius: $inputBorderRadius;
       width: 10%;
     }
-  }
-}
-
-.repo__list > a {
-  display: block;
-  width: 100%;
-  color: black;
-  text-align: center;
-  text-decoration: underline;
-}
-
-table {
-  border-spacing: 10px;
-  width: 100%;
-  margin-bottom: 10px;
-
-  tr, td {
-    text-align: left;
   }
 }
 
