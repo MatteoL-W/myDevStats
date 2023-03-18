@@ -2,18 +2,16 @@
   <div class="homepage">
     <h1 v-text="'<myDevStats>'"></h1>
     <SearchBar></SearchBar>
-    <GitHubLogin style="width: 400px"></GitHubLogin>
   </div>
 </template>
 
 
 <script>
-import GitHubLogin from '@/components/GitHubLogin.vue'
 import SearchBar from '@/components/SearchBar.vue'
 
 export default {
   name: 'HomePage',
-  components: { SearchBar, GitHubLogin },
+  components: { SearchBar},
 }
 </script>
 
