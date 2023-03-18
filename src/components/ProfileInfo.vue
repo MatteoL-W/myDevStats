@@ -1,9 +1,6 @@
 <template>
   <div class="info">
-    <div class="info__data">
-      <!-- ToDo -->
-      Data Visualisation
-    </div>
+    <ProfileDataVisualization :user="user"></ProfileDataVisualization>
     <div class="info__cards">
       <div class="info__cards-github">
 
@@ -30,9 +27,11 @@
 
 <script>
 import { octokit } from '@/services/api/octokit'
+import ProfileDataVisualization from "@/components/ProfileDataVisualization.vue";
 
 export default {
   name: 'ProfileInfo',
+  components: {ProfileDataVisualization},
   props: {
     usernameGitHub: { type: String, required: true },
   },
@@ -50,7 +49,6 @@ export default {
         username: this.usernameGitHub,
       })
       this.user = await request.data
-      console.log(this.user)
     },
   },
 }

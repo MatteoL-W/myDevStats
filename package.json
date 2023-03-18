@@ -11,6 +11,8 @@
     "@octokit/plugin-paginate-rest": "^6.0.0",
     "core-js": "^3.8.3",
     "octokit": "^2.0.14",
+    "three": "^0.134.0",
+    "troisjs": "^0.3.4",
     "vue": "^3.2.13",
     "vue-router": "^4.1.6"
   },
