@@ -10,7 +10,7 @@
         <th>Created at</th>
       </tr>
 
-      <tr v-for="repo in repositories" :key="repo.id">
+      <tr v-for="repo in repositories" :key="repo.id" @click="selectRepo(repo)">
         <td>{{ repo.name }}</td>
         <td>{{ repo.commitsNumber }}</td>
         <td>{{ repo.stargazers_count }}</td>
@@ -23,10 +23,16 @@
 </template>
 
 <script>
+import { eventBus } from '@/utils/event-bus-profile.js'
 
 export default {
   name: 'RepoList',
   props: ['repositories'],
+  methods: {
+    selectRepo(repo) {
+      eventBus.emit('repo-selected', repo)
+    },
+  },
 }
 </script>
 

@@ -7,8 +7,7 @@
         <box ref="box" :rotation="{ y: Math.PI / 4, z: Math.PI / 4 }">
           <LambertMaterial />
         </box>
-        <Text
-            text="Arkulib"
+        <Text v-if="selectedRepo" :text="selectedRepo.name"
             font-src="https://unpkg.com/three@0.77.0/examples/fonts/helvetiker_bold.typeface.json"
             align="center"
             :size="1"
@@ -24,12 +23,24 @@
 </template>
 
 <script>
+import { eventBus } from '@/utils/event-bus-profile.js'
+
 export default {
   name: "ProfileDataVisualization",
+  data() {
+    return {
+      selectedRepo: null,
+      exist: true,
+    }
+  },
   props: {
     username: {type: String, required: true},
   },
   mounted() {
+    eventBus.on('repo-selected', repo => {
+      this.selectedRepo = repo
+    })
+
     const renderer = this.$refs.renderer
     const box = this.$refs.box.mesh
 
