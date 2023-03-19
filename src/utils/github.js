@@ -1,11 +1,18 @@
 import { octokit } from '@/services/api/octokit'
 
-const countCommits = async (
-  repoAuthor, repo, branch, username = repoAuthor) => {
-  const response = await octokit.request(
-    'GET /repos/{repoAuthor}/{repo}/commits?author={username}&sha={branch}&per_page=1&page=1',
-    { repoAuthor, repo, branch, username },
-  )
+const countCommits = async (repoAuthor, repo, branch, username) => {
+  let response;
+  if (username) {
+    response = await octokit.request(
+        'GET /repos/{repoAuthor}/{repo}/commits?author={username}&sha={branch}&per_page=1&page=1',
+        { repoAuthor, repo, branch, username },
+    )
+  } else {
+    response = await octokit.request(
+        'GET /repos/{repoAuthor}/{repo}/commits?sha={branch}&per_page=1&page=1',
+        { repoAuthor, repo, branch, username },
+    )
+  }
 
   const link = response.headers.link
   // We get the page number generated in the header response in order to have the commits number
@@ -17,6 +24,8 @@ const retrieveCommitsNumber = async (repositories, author) => {
   for (let repository of repositories) {
     repository.commitsNumber = await countCommits(repository.owner.login,
       repository.name, repository.default_branch, author)
+    repository.allCommitsNumber = await countCommits(repository.owner.login,
+        repository.name, repository.default_branch, null)
   }
 }
 
