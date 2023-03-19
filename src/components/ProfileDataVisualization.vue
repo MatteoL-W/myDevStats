@@ -5,35 +5,40 @@
       <scene>
         <point-light :position="{ y: 50, z: 50 }"></point-light>
         <box ref="box" :rotation="{ y: Math.PI / 4, z: Math.PI / 4 }">
-          <lambert-material></lambert-material>
+          <LambertMaterial />
         </box>
+        <Text
+            text="Arkulib"
+            font-src="https://unpkg.com/three@0.77.0/examples/fonts/helvetiker_bold.typeface.json"
+            align="center"
+            :size="1"
+            :height="0.5"
+            :position="{ x: 0, y: 3, z: 0 }"
+            :cast-shadow="true"
+        >
+          <PhongMaterial />
+        </Text>
       </scene>
     </renderer>
   </div>
 </template>
 
 <script>
-import * as THREE from 'three';
-
 export default {
   name: "ProfileDataVisualization",
   props: {
-    user: {type: Object, required: true},
+    username: {type: String, required: true},
   },
   mounted() {
-    const scene = this.$refs.renderer.scene
     const renderer = this.$refs.renderer
     const box = this.$refs.box.mesh
-
-    const size = 12;
-    const divisions = 12;
-    const gridHelper = new THREE.GridHelper( size, divisions );
-    scene.add( gridHelper );
 
     renderer.onBeforeRender(() => {
       box.rotation.x += 0.01
     })
-  }
+
+    //retrieveRepoInfo(this.username, "arkulib").then((result) => {console.log(result)})
+  },
 }
 
 </script>

@@ -1,7 +1,8 @@
 <template>
   <div class="info">
-    <ProfileDataVisualization :user="user"></ProfileDataVisualization>
+    <ProfileDataVisualization :username="usernameGitHub"></ProfileDataVisualization>
     <div class="info__cards">
+      <!-- ToDo: In component -->
       <div class="info__cards-github">
 
         <div class="top">
@@ -20,6 +21,7 @@
         </div>
       </div>
 
+      <!-- ToDo: In component -->
       <a class="info__cards-generate" :href="usernameGitHub + '/card'">Generate GitHub Card</a>
     </div>
   </div>

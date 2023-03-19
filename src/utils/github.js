@@ -30,4 +30,12 @@ const retrieveUserRepos = async (username, page) => {
   return repositories
 }
 
+export const retrieveRepoInfo = async (owner, repo) => {
+  const response = await octokit.request(
+      'GET /repos/{owner}/{repo}',
+      { owner, repo },
+  )
+  return response.data
+}
+
 export { countCommits, retrieveUserRepos, retrieveCommitsNumber }
