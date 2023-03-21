@@ -9,16 +9,18 @@
     </div>
     <RepoList :repositories="repositories"></RepoList>
     <a href="#" v-on:click.prevent="retrieveUserRepos">Show more</a>
+    <LoadingIcon v-if="moreReposLoading"></LoadingIcon>
   </div>
 </template>
 
 <script>
 import RepoList from '@/components/RepoList.vue'
 import { retrieveUserRepos } from '@/utils/github'
+import LoadingIcon from '@/components/LoadingIcon.vue'
 
 export default {
   name: 'ProfileRepo',
-  components: { RepoList },
+  components: { LoadingIcon, RepoList },
   props: {
     usernameGitHub: { type: String, required: true },
   },
@@ -26,6 +28,7 @@ export default {
     return {
       repositories: [],
       pageLoaded: 0,
+      moreReposLoading: false,
     }
   },
   created () {
@@ -33,9 +36,11 @@ export default {
   },
   methods: {
     async retrieveUserRepos () {
+      this.moreReposLoading = true
       this.pageLoaded++
       const response = await retrieveUserRepos(this.usernameGitHub, this.pageLoaded)
       this.repositories.push(...response)
+      this.moreReposLoading = false
     },
   },
 }
