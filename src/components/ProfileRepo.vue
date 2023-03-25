@@ -8,8 +8,8 @@
       </div>
     </div>
     <RepoList :repositories="repositories"></RepoList>
-    <a href="#" v-on:click.prevent="retrieveUserRepos">Show more</a>
     <LoadingIcon v-if="moreReposLoading"></LoadingIcon>
+    <a href="#" v-on:click.prevent="retrieveUserRepos">Show more</a>
   </div>
 </template>
 
