@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <form @submit.prevent="handleSubmit">
     <input type="text" placeholder="Enter a GitHub name..." v-model="searchbar">
-    <a :href="searchbar" class="material-symbols-outlined">search</a>
-  </div>
+    <input type="submit" class="material-symbols-outlined" value="search">
+  </form>
 </template>
 
 <script>
@@ -12,6 +12,11 @@ export default {
     return {
       searchbar: null,
     }
+  },
+  methods: {
+    handleSubmit() {
+      this.$router.push(`/${this.searchbar}`);
+    }
   }
 }
 </script>
@@ -20,14 +25,14 @@ export default {
 
 @import '@/assets/scss/variables.scss';
 
-div {
+form {
   display: flex;
   justify-content: space-between;
   width: 400px;
   margin-bottom: 15px;
   margin-top: 15px;
 
-  input {
+  input[type='text'] {
     border: 0;
     border-radius: $inputBorderRadius;
     outline: none;
@@ -37,7 +42,8 @@ div {
     box-shadow: $shadowDefault;
   }
 
-  a {
+  input[type='submit'] {
+    outline: none;
     display: flex;
     background-color: #74A3FF;
     border-radius: $inputBorderRadius;
