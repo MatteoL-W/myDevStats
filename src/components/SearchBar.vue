@@ -14,8 +14,9 @@ export default {
     }
   },
   methods: {
-    handleSubmit() {
-      this.$router.push(`/${this.searchbar}`);
+    async handleSubmit() {
+      await this.$router.push({path: `/${this.searchbar}`})
+      this.$router.go(0)
     }
   }
 }
