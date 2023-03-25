@@ -1,5 +1,7 @@
 <template>
-  <span class="loading material-symbols-outlined">autorenew</span>
+  <div>
+    <span class="loading material-symbols-outlined">autorenew</span>
+  </div>
 </template>
 
 <script>
@@ -9,11 +11,16 @@ export default {
 </script>
 
 <style scoped>
-.loading {
+
+div {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 10px;
+}
+
+.loading {
   animation: infinite 2s linear rotating;
 }
 
