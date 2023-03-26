@@ -1,8 +1,9 @@
 <template>
   <div class="repo__list">
+    <input type="text" placeholder="Search a repository" v-model="search" @keyup="sortBySearch(repositories)">
     <table>
       <tr>
-        <th v-for="(col, index) in columns" :key="index" @click="sort(col)"
+        <th v-for="(col, index) in columns" :key="index" @click="sortByProperty(col)"
             :class="{ desc: col.key === activeColumn && sortOrder === 'desc', asc: col.key === activeColumn && sortOrder === 'asc' }">
           {{ col.label }}
         </th>
@@ -23,6 +24,7 @@ export default {
   name: "RepoList",
   props: ["repositories"],
   data: () => ({
+    search: '',
     sortedRepositories: [],
     activeColumn: "updated_at",
     sortOrder: "desc",
@@ -39,7 +41,12 @@ export default {
     selectRepo(repo) {
       eventBus.emit("repo-selected", repo);
     },
-    sort(selectedColumn) {
+    sortBySearch(array) {
+      this.sortedRepositories = array.filter((repo) =>
+          repo.name.toLowerCase().includes(this.search.toLowerCase())
+      );
+    },
+    sortByProperty(selectedColumn) {
       if (selectedColumn.key === this.activeColumn) {
         this.sortOrder = this.sortOrder === "desc" ? "asc" : "desc";
       } else {
@@ -51,6 +58,7 @@ export default {
       this.sortedRepositories = [...this.repositories].sort((a, b) =>
           sortFn(this.getValue(a, selectedColumn, true), this.getValue(b, selectedColumn, true))
       );
+      this.sortBySearch(this.sortedRepositories)
     },
     getValue(repo, column, toCompare = false) {
       switch (column.type) {
@@ -77,27 +85,42 @@ export default {
   watch: {
     repositories: {
       handler() {
-        this.sort(this.activeColumn);
+        this.sortByProperty(this.activeColumn);
       },
       deep: true
     }
   }
 };
 </script>
+
 <style scoped lang="scss">
+@import '@/assets/scss/variables.scss';
+
+
+input {
+  border: 0;
+  outline: 0;
+  background: #EFEFEF;
+  border-radius: $inputBorderRadius;
+  outline: none;
+  font-style: italic;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
 table {
   border-spacing: 10px;
   width: 100%;
   margin-bottom: 10px;
 
-  tr,
-  td {
+  tr, td, th {
     text-align: left;
+    cursor: pointer;
   }
 
   th {
-    text-align: left;
-    cursor: pointer;
     position: relative;
 
     &.desc::after {
