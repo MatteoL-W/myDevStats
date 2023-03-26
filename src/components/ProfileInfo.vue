@@ -6,16 +6,16 @@
       <div class="info__cards-github">
 
         <div class="top">
-          <img :src="user?.avatar_url" alt="">
+          <img :src="user?.avatar_url" alt="{{usernameGitHub}}">
           <div>
             <h2>{{ usernameGitHub }}</h2>
-            <p>{{ user?.name }}</p>
-            <p>Web: <a :href="user?.blog">{{ user?.blog }}</a></p>
+            <p v-show="user?.name !== null">{{ user?.name }}</p>
+            <p v-show="user?.blog !== ''">Web: <a :href="user?.blog">{{ user?.blog }}</a></p>
           </div>
         </div>
 
         <div class="bottom">
-          <p>{{ user?.bio }}</p>
+          <p v-show="user?.bio !== null">{{ user?.bio }}</p>
           <p>GitHub: <a :href="user?.html_url">{{ user?.html_url }}</a></p>
           <p>{{ user?.followers }} followers · {{ user?.following }} following</p>
         </div>
@@ -61,6 +61,7 @@ export default {
 
       this.$emit('userExists', { data: true });
       this.user = await response.data
+      console.log(this.user)
     },
   }
   ,
@@ -107,8 +108,15 @@ export default {
         display: flex;
         background: #D9D9D9;
 
+        h2 {
+          display: inline-block;
+        }
+
         > div {
           padding: 15px 15px 15px 25px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
       }
 
