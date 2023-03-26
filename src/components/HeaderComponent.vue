@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import SearchBar from "@/components/SearchBar.vue";
+import SearchBar from "@/components/ProfileSearchBar.vue";
 
 export default {
   name: "HeaderComponent",
