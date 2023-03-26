@@ -1,6 +1,6 @@
 <template>
   <HeaderComponent></HeaderComponent>
-  <ProfileInfo :username-git-hub="usernameGitHub" v-show="displayUserInfo" @userExists="handleExistence"></ProfileInfo>
+  <ProfileInfo :username-git-hub="usernameGitHub" v-show="displayUserInfo" @userExists.once="handleExistence"></ProfileInfo>
   <ProfileRepo :username-git-hub="usernameGitHub" v-if="displayUserInfo"></ProfileRepo>
   <InvalidUserComponent :username-git-hub="usernameGitHub" v-if="!isLoading && !displayUserInfo"></InvalidUserComponent>
   <LoadingIcon v-if="isLoading"></LoadingIcon>
