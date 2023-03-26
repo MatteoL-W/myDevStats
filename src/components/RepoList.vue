@@ -3,7 +3,7 @@
     <table>
       <tr>
         <th v-for="(col, index) in columns" :key="index" @click="sort(col)"
-            :class="{ active: col.key === activeColumn }">
+            :class="{ desc: col.key === activeColumn && sortOrder === 'desc', asc: col.key === activeColumn && sortOrder === 'asc' }">
           {{ col.label }}
         </th>
       </tr>
@@ -49,16 +49,19 @@ export default {
 
       const sortFn = this.sortOrder === "desc" ? this.descSort : this.ascSort;
       this.sortedRepositories = [...this.repositories].sort((a, b) =>
-          sortFn(this.getValue(a, selectedColumn), this.getValue(b, selectedColumn))
+          sortFn(this.getValue(a, selectedColumn, true), this.getValue(b, selectedColumn, true))
       );
     },
-    getValue(repo, column) {
+    getValue(repo, column, toCompare = false) {
       switch (column.type) {
         case "date":
           return new Date(repo[column.key]).toLocaleString();
 
         case "int":
-          return parseInt(repo[column.key]);
+          return parseInt(repo[column.key] ?? 0);
+
+        case "text":
+          return toCompare ? repo[column.key].toUpperCase() : repo[column.key];
 
         default:
           return repo[column.key];
@@ -95,9 +98,18 @@ table {
   th {
     text-align: left;
     cursor: pointer;
+    position: relative;
 
-    &.active {
-      color: red;
+    &.desc::after {
+      position: absolute;
+      right: 20px;
+      content: "▼";
+    }
+
+    &.asc::before {
+      position: absolute;
+      right: 20px;
+      content: "▲";
     }
   }
 }
