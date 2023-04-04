@@ -18,79 +18,82 @@
 </template>
 
 <script>
-import {eventBus} from "@/utils/event-bus-profile.js";
+import { eventBus } from '@/utils/event-bus-profile.js'
+
+// ToDo : Faire avec computed
 
 export default {
-  name: "RepoList",
-  props: ["repositories"],
+  name: 'RepoList',
+  props: ['repositories'],
   data: () => ({
     search: '',
     sortedRepositories: [],
-    activeColumn: "updated_at",
-    sortOrder: "desc",
+    activeColumn: 'updated_at',
+    sortOrder: 'desc',
     columns: [
-      {key: "name", label: "Name", type: "text"},
-      {key: "commitsNumber", label: "Commits Number", type: "int"},
-      {key: "stargazers_count", label: "Stars Number", type: "int"},
-      {key: "language", label: "Language", type: "text"},
-      {key: "updated_at", label: "Updated at", type: "date"},
-      {key: "created_at", label: "Created at", type: "date"}
-    ]
+      { key: 'name', label: 'Name', type: 'text' },
+      { key: 'commitsNumber', label: 'Commits Number', type: 'int' },
+      { key: 'stargazers_count', label: 'Stars Number', type: 'int' },
+      { key: 'language', label: 'Language', type: 'text' },
+      { key: 'updated_at', label: 'Updated at', type: 'date' },
+      { key: 'created_at', label: 'Created at', type: 'date' },
+    ],
   }),
   methods: {
-    selectRepo(repo) {
-      eventBus.emit("repo-selected", repo);
+    selectRepo (repo) {
+      eventBus.emit('repo-selected', repo)
     },
-    sortBySearch(array) {
+    sortBySearch (array) {
       this.sortedRepositories = array.filter((repo) =>
-          repo.name.toLowerCase().includes(this.search.toLowerCase())
-      );
+          repo.name.toLowerCase().
+              includes(this.search.toLowerCase()),
+      )
     },
-    sortByProperty(selectedColumn) {
+    sortByProperty (selectedColumn) {
       if (selectedColumn.key === this.activeColumn) {
-        this.sortOrder = this.sortOrder === "desc" ? "asc" : "desc";
+        this.sortOrder = this.sortOrder === 'desc' ? 'asc' : 'desc'
       } else {
-        this.activeColumn = selectedColumn.key;
-        this.sortOrder = "desc";
+        this.activeColumn = selectedColumn.key
+        this.sortOrder = 'desc'
       }
 
-      const sortFn = this.sortOrder === "desc" ? this.descSort : this.ascSort;
+      const sortFn = this.sortOrder === 'desc' ? this.descSort : this.ascSort
       this.sortedRepositories = [...this.repositories].sort((a, b) =>
-          sortFn(this.getValue(a, selectedColumn, true), this.getValue(b, selectedColumn, true))
-      );
+          sortFn(this.getValue(a, selectedColumn, true), this.getValue(b, selectedColumn, true)),
+      )
       this.sortBySearch(this.sortedRepositories)
     },
-    getValue(repo, column, toCompare = false) {
+    getValue (repo, column, toCompare = false) {
       switch (column.type) {
-        case "date":
-          return new Date(repo[column.key]).toLocaleString();
+        case 'date':
+          return new Date(repo[column.key]).toLocaleString()
 
-        case "int":
-          return parseInt(repo[column.key] ?? 0);
+        case 'int':
+          return parseInt(repo[column.key] ?? 0)
 
-        case "text":
-          return toCompare ? repo[column.key].toUpperCase() : repo[column.key];
+        case 'text':
+          return toCompare ? repo[column.key].toUpperCase() : repo[column.key]
 
         default:
-          return repo[column.key];
+          return repo[column.key]
       }
     },
-    ascSort(a, b) {
-      return a > b ? 1 : -1;
+    ascSort (a, b) {
+      return a > b ? 1 : -1
     },
-    descSort(a, b) {
-      return a > b ? -1 : 1;
+    descSort (a, b) {
+      return a > b ? -1 : 1
     },
   },
   watch: {
     repositories: {
-      handler() {
-        this.sortByProperty(this.activeColumn);
+      handler () {
+        this.sortByProperty(this.activeColumn)
       },
-      deep: true
-    }
-  }
-};
+      deep: true,
+    },
+  },
+}
 </script>
 
 <style scoped lang="scss">

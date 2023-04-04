@@ -28,14 +28,14 @@
 </template>
 
 <script>
-import {octokit} from '@/services/api/octokit'
-import ProfileDataVisualization from "@/components/ProfileDataVisualization.vue";
+import { octokit } from '@/services/api/octokit'
+import ProfileDataVisualization from '@/components/ProfileDataVisualization.vue'
 
 export default {
   name: 'ProfileInfo',
-  components: {ProfileDataVisualization},
+  components: { ProfileDataVisualization },
   props: {
-    usernameGitHub: {type: String, required: true},
+    usernameGitHub: { type: String, required: true },
   },
   emits: ['userExists'],
   data: () => {
@@ -43,25 +43,24 @@ export default {
       user: null,
     }
   },
-  created() {
+  created () {
     this.retrieveUserInfo()
   },
   methods: {
-    async retrieveUserInfo() {
-      let response;
+    async retrieveUserInfo () {
+      let response
 
       try {
         response = await octokit.request('GET /users/{username}', {
           username: this.usernameGitHub,
         })
       } catch (error) {
-        this.$emit('userExists', { data: false });
-        return;
+        this.$emit('userExists', { data: false })
+        return
       }
 
-      this.$emit('userExists', { data: true });
+      this.$emit('userExists', { data: true })
       this.user = await response.data
-      console.log(this.user)
     },
   }
   ,
