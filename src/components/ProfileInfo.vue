@@ -44,7 +44,12 @@ export default {
     }
   },
   created () {
-    this.retrieveUserInfo()
+    const profileCache = sessionStorage.getItem(this.usernameGitHub + '_info')
+    if (profileCache)
+      this.loadCache(profileCache)
+
+    else
+      this.retrieveUserInfo()
   },
   methods: {
     async retrieveUserInfo () {
@@ -59,8 +64,13 @@ export default {
         return
       }
 
+      sessionStorage.setItem(this.usernameGitHub + '_info', JSON.stringify(response.data))
       this.$emit('userExists', { data: true })
       this.user = await response.data
+    },
+    async loadCache (profileCache) {
+      this.user = JSON.parse(profileCache)
+      this.$emit('userExists', { data: true })
     },
   }
   ,

@@ -28,15 +28,29 @@ export default {
     }
   },
   created () {
-    this.retrieveUserRepos()
+    this.moreReposLoading = true
+
+    const repositoriesCache = sessionStorage.getItem(this.usernameGitHub + '_repositories')
+    if (repositoriesCache)
+      this.loadCache(repositoriesCache)
+
+    else
+      this.retrieveUserRepos()
+
+    this.moreReposLoading = false
   },
   methods: {
+    async loadCache (repositoriesCache) {
+      this.repositories = JSON.parse(repositoriesCache)
+      this.pageLoaded = sessionStorage.getItem(this.usernameGitHub + '_page')
+    },
     async retrieveUserRepos () {
-      this.moreReposLoading = true
       this.pageLoaded++
+      sessionStorage.setItem(this.usernameGitHub + '_page', this.pageLoaded)
+
       const response = await retrieveUserRepos(this.usernameGitHub, this.pageLoaded)
       this.repositories.push(...response)
-      this.moreReposLoading = false
+      sessionStorage.setItem(this.usernameGitHub + '_repositories', JSON.stringify(this.repositories))
     },
   },
 }

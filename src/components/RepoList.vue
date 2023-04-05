@@ -20,8 +20,6 @@
 <script>
 import { eventBus } from '@/utils/event-bus-profile.js'
 
-// ToDo : Faire avec computed
-
 export default {
   name: 'RepoList',
   props: ['repositories'],
@@ -29,7 +27,7 @@ export default {
     search: '',
     sortedRepositories: [],
     activeColumn: 'updated_at',
-    sortOrder: 'desc',
+    sortOrder: 'asc',
     columns: [
       { key: 'name', label: 'Name', type: 'text' },
       { key: 'commitsNumber', label: 'Commits Number', type: 'int' },
@@ -39,6 +37,9 @@ export default {
       { key: 'created_at', label: 'Created at', type: 'date' },
     ],
   }),
+  created () {
+    this.sortByProperty(this.columns[4])
+  },
   methods: {
     selectRepo (repo) {
       eventBus.emit('repo-selected', repo)
@@ -50,29 +51,33 @@ export default {
       )
     },
     sortByProperty (selectedColumn) {
-      if (selectedColumn.key === this.activeColumn) {
-        this.sortOrder = this.sortOrder === 'desc' ? 'asc' : 'desc'
-      } else {
-        this.activeColumn = selectedColumn.key
-        this.sortOrder = 'desc'
-      }
+      this.updateSortType(selectedColumn)
 
       const sortFn = this.sortOrder === 'desc' ? this.descSort : this.ascSort
       this.sortedRepositories = [...this.repositories].sort((a, b) =>
           sortFn(this.getValue(a, selectedColumn, true), this.getValue(b, selectedColumn, true)),
       )
+
       this.sortBySearch(this.sortedRepositories)
+    },
+    updateSortType (selectedColumn) {
+      if (selectedColumn.key === this.activeColumn) {
+        this.sortOrder = this.sortOrder === 'desc' ? 'asc' : 'desc'
+      } else {
+        this.activeColumn = selectedColumn.key ?? 'updated_at'
+        this.sortOrder = 'desc'
+      }
     },
     getValue (repo, column, toCompare = false) {
       switch (column.type) {
         case 'date':
-          return new Date(repo[column.key]).toLocaleString()
-
-        case 'int':
-          return parseInt(repo[column.key] ?? 0)
+          return toCompare ? new Date(repo[column.key]) : new Date(repo[column.key]).toLocaleString()
 
         case 'text':
           return toCompare ? repo[column.key].toUpperCase() : repo[column.key]
+
+        case 'int':
+          return parseInt(repo[column.key] ?? 0)
 
         default:
           return repo[column.key]
