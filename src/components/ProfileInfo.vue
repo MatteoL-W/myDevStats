@@ -10,7 +10,7 @@
           <div>
             <h2>{{ usernameGitHub }}</h2>
             <p v-show="user?.name !== null">{{ user?.name }}</p>
-            <p v-show="user?.blog !== ''">Web: <a :href="user?.blog">{{ user?.blog }}</a></p>
+            <p v-show="user?.blog !== ''">Web: <a :href="'http://' +  user?.blog">{{ user?.blog }}</a></p>
           </div>
         </div>
 
