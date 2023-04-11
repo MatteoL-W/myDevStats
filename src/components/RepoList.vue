@@ -74,7 +74,7 @@ export default {
           return toCompare ? new Date(repo[column.key]) : new Date(repo[column.key]).toLocaleString()
 
         case 'text':
-          return toCompare ? repo[column.key].toUpperCase() : repo[column.key]
+          return toCompare ? repo[column.key]?.toUpperCase() : repo[column.key]
 
         case 'int':
           return parseInt(repo[column.key] ?? 0)
