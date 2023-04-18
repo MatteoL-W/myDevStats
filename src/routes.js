@@ -1,6 +1,6 @@
-import HomePage from '@/page/HomePage.vue'
-import ProfilePage from '@/page/ProfilePage.vue'
-import CardPage from '@/page/CardPage.vue'
+import HomePage from '@/pages/HomePage.vue'
+import ProfilePage from '@/pages/ProfilePage.vue'
+import CardPage from '@/pages/CardPage.vue'
 
 const routes = [
   {
