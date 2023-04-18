@@ -33,7 +33,7 @@ export default {
       { key: 'commitsNumber', label: 'Commits Number', type: 'int' },
       { key: 'stargazers_count', label: 'Stars Number', type: 'int' },
       { key: 'language', label: 'Language', type: 'text' },
-      { key: 'updated_at', label: 'Updated at', type: 'date' },
+      { key: 'pushed_at', label: 'Updated at', type: 'date' },
       { key: 'created_at', label: 'Created at', type: 'date' },
     ],
   }),
