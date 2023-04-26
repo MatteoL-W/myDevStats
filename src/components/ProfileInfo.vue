@@ -1,9 +1,9 @@
 <template>
-  <div class="info" v-if="userExistsData">
+  <div class="info" v-if="displayComponents">
     <ProfileDataVisualization :username="usernameGitHub"></ProfileDataVisualization>
     <div class="info__cards">
       <CardGithub :usernameGitHub="usernameGitHub" :user="user"/>
-      <CardGenerate :username-git-hub="usernameGitHub"/>
+      <CardGenerate :usernameGitHub="usernameGitHub"/>
     </div>
   </div>
 </template>
@@ -24,11 +24,18 @@ export default {
   data: () => {
     return {
       user: null,
-      userExistsData: true,
+      displayComponents: true,
     }
   },
+
+  computed: {
+    infoCacheKey () {
+      return `${this.usernameGitHub}_info`
+    },
+  },
+
   created () {
-    const profileCache = localStorage.getItem(this.usernameGitHub + '_info')
+    const profileCache = localStorage.getItem(this.infoCacheKey)
     if (profileCache)
       this.loadCache(profileCache)
 
@@ -37,21 +44,17 @@ export default {
   },
   methods: {
     async retrieveUserInfo () {
-      let response
-
       try {
-        response = await octokit.request('GET /users/{username}', {
+        const response = await octokit.request('GET /users/{username}', {
           username: this.usernameGitHub,
         })
+        localStorage.setItem(this.infoCacheKey, JSON.stringify(response.data))
+        this.$emit('userExists', { data: true })
+        this.user = await response.data
       } catch (error) {
         this.$emit('userExists', { data: false })
-        this.userExistsData = false
-        return
+        this.displayComponents = false
       }
-
-      localStorage.setItem(this.usernameGitHub + '_info', JSON.stringify(response.data))
-      this.$emit('userExists', { data: true })
-      this.user = await response.data
     },
     async loadCache (profileCache) {
       this.user = JSON.parse(profileCache)

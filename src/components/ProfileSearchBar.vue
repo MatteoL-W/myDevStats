@@ -1,13 +1,13 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <input type="text" placeholder="Enter a GitHub name..." v-model="searchbar">
+    <input type="text" placeholder="Enter a GitHub name..." v-model.trim="searchbar">
     <input type="submit" class="material-symbols-outlined" value="search">
   </form>
 </template>
 
 <script>
 export default {
-  name: 'SearchBar',
+  name: 'ProfileSearchBar',
   data: () => {
     return {
       searchbar: null,

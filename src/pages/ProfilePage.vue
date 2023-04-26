@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     handleExistence (doesExist) {
-      console.log(this)
       this.isLoading = false
       if (doesExist.data === true)
         this.displayUserInfo = true
