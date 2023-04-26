@@ -1,16 +1,16 @@
 import { octokit } from '@/services/api/octokit'
 
 const countCommits = async (repoAuthor, repo, branch, username) => {
-  let response;
+  let response
   if (username) {
     response = await octokit.request(
-        'GET /repos/{repoAuthor}/{repo}/commits?author={username}&sha={branch}&per_page=1&page=1',
-        { repoAuthor, repo, branch, username },
+      'GET /repos/{repoAuthor}/{repo}/commits?author={username}&sha={branch}&per_page=1&page=1',
+      { repoAuthor, repo, branch, username },
     )
   } else {
     response = await octokit.request(
-        'GET /repos/{repoAuthor}/{repo}/commits?sha={branch}&per_page=1&page=1',
-        { repoAuthor, repo, branch, username },
+      'GET /repos/{repoAuthor}/{repo}/commits?sha={branch}&per_page=1&page=1',
+      { repoAuthor, repo, branch, username },
     )
   }
 
@@ -25,14 +25,14 @@ const retrieveCommitsNumber = async (repositories, author) => {
     repository.commitsNumber = await countCommits(repository.owner.login,
       repository.name, repository.default_branch, author)
     repository.allCommitsNumber = await countCommits(repository.owner.login,
-        repository.name, repository.default_branch, null)
+      repository.name, repository.default_branch, null)
   }
 }
 
-const retrieveUserRepos = async (username, page) => {
+const retrieveUserRepos = async (username, page, perPage = 5) => {
   const response = await octokit.request(
-    'GET /users/{username}/repos?type=all&sort=pushed&per_page=5&page={page}',
-    { username, page },
+    'GET /users/{username}/repos?type=all&sort=pushed&per_page={perPage}&page={page}',
+    { username, page, perPage },
   )
   let repositories = response.data
   await retrieveCommitsNumber(repositories, username)
@@ -41,8 +41,8 @@ const retrieveUserRepos = async (username, page) => {
 
 export const retrieveRepoInfo = async (owner, repo) => {
   const response = await octokit.request(
-      'GET /repos/{owner}/{repo}',
-      { owner, repo },
+    'GET /repos/{owner}/{repo}',
+    { owner, repo },
   )
   return response.data
 }

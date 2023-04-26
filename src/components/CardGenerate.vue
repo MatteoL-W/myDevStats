@@ -1,5 +1,5 @@
 <template>
-  <a class="info__cards-generate" :href="usernameGitHub + '/card'">Generate GitHub Card</a>
+  <a class="info__cards-generate" href="card">Generate GitHub Card</a>
 </template>
 
 <script>
