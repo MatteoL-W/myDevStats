@@ -27,17 +27,29 @@ export default {
     search: '',
     activeColumn: 'updated_at',
     sortOrder: 'desc',
-    // ToDo : Config pour responsive
-    columns: [
-      { key: 'name', label: 'Name', type: 'text' },
-      { key: 'commitsNumber', label: 'Commits Number', type: 'int' },
-      { key: 'stargazers_count', label: 'Stars Number', type: 'int' },
-      { key: 'language', label: 'Language', type: 'text' },
-      { key: 'pushed_at', label: 'Updated at', type: 'date' },
-      { key: 'created_at', label: 'Created at', type: 'date' },
-    ],
   }),
+
   computed: {
+    columns () {
+      let columns = [
+        { key: 'name', label: 'Name', type: 'text' },
+        { key: 'commitsNumber', label: 'Commits Number', type: 'int' },
+        { key: 'stargazers_count', label: 'Stars Number', type: 'int' },
+        { key: 'language', label: 'Language', type: 'text' },
+        { key: 'pushed_at', label: 'Updated at', type: 'date' },
+        { key: 'created_at', label: 'Created at', type: 'date' },
+      ]
+
+      if (window.innerWidth < 500) {
+        columns.pop() // -created_at
+        columns.splice(3, 1) // -language
+        columns.splice(2, 1) // -stargazers_count
+      } else if (window.innerWidth < 700) {
+        columns.pop() // -created_at
+      }
+
+      return columns
+    },
     sortedRepositories () {
       const sortFn = this.sortOrder === 'desc' ? this.descSort : this.ascSort
       const sorted = [...this.repositories].sort((a, b) =>
@@ -53,12 +65,15 @@ export default {
           : sorted
     },
     selectedColumn () {
-      return this.columns.find(column => column.key === this.activeColumn) || this.columns[4]
+      return this.columns.find(column => column.key === this.activeColumn)
+          || this.columns.find(column => column.key === 'pushed_at')
     },
   },
+
   created () {
     this.activeColumn = this.selectedColumn.key
   },
+
   methods: {
     ascSort (a, b) { return a > b ? 1 : -1 },
     descSort (a, b) { return a > b ? -1 : 1 },

@@ -66,15 +66,28 @@ export default {
 
 <style scoped lang="scss">
 .info {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: $spacing;
-  margin-top: 10px;
+
+  @media all and (min-width: 700px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 10px;
+  }
+
+  @media all and (min-width: 1000px) {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    margin-top: 10px;
+  }
 
   &__data {
     background: white;
     border-radius: $cardBorderRadius;
     width: 100%;
+    height: 100%;
     display: flex;
     font-weight: bold;
     align-items: center;
@@ -85,6 +98,7 @@ export default {
   &__cards {
     display: flex;
     flex-direction: column;
+    width: 100%;
   }
 }
 

@@ -6,19 +6,25 @@
 </template>
 
 <script>
-import SearchBar from "@/components/ProfileSearchBar.vue";
+import SearchBar from '@/components/ProfileSearchBar.vue'
 
 export default {
-  name: "HeaderComponent",
-  components: {SearchBar}
+  name: 'HeaderComponent',
+  components: { SearchBar },
 }
 </script>
 
 <style scoped lang="scss">
 .header {
-  display: flex;
   width: 100%;
-  justify-content: space-between;
+
+  display: flex;
+  flex-direction: column-reverse;
   align-items: center;
+
+  @media all and (min-width: 800px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 </style>

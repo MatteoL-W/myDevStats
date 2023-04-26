@@ -18,7 +18,12 @@ body {
 }
 
 .container {
-  width: 80%;
+  width: 96%;
+
+  @media all and (min-width: 1000px) {
+    width: 80%;
+  }
+
   margin: 0 auto;
 }
 
