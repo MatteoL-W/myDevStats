@@ -63,47 +63,54 @@ export default {
       loading: false,
       selectedRepo: null,
       latestCommits: [],
-      sortedCommits: [],
       maxCommits: 1,
     }
   },
   props: {
     username: { type: String, required: true },
   },
-  async created () {
-    eventBus.on('repo-selected', async repo => {
-      this.loading = true
-
-      this.sortedCommits = []
-      this.selectedRepo = repo
-
-      const latestCommits = await octokit.request('GET /repos/{owner}/{repo}/commits?author={username}', {
-        owner: repo.owner.login,
-        repo: repo.name,
-        username: this.username,
-      })
-      this.latestCommits = latestCommits.data
-
-      await this.latestCommits.forEach((commit) => {
+  computed: {
+    sortedCommits () {
+      return this.latestCommits.reduce((acc, commit) => {
         const date = new Date(commit.commit.committer.date).toLocaleDateString()
-        const dateLine = this.sortedCommits.find(dayStat => dayStat.date === date)
+        const dateLine = acc.find(dayStat => dayStat.date === date)
 
         if (dateLine) dateLine.commits += 1
-        else this.sortedCommits.push({ date, commits: 1 })
+        else acc.push({ date, commits: 1 })
 
         this.maxCommits = (dateLine?.commits > this.maxCommits) ? dateLine.commits : this.maxCommits
-      })
-      this.sortedCommits.reverse()
+
+        return acc
+      }, []).
+          reverse()
+    },
+  },
+  async created () {
+    eventBus.on('repo-selected', this.handleRepoSelected)
+  },
+  methods: {
+    async handleRepoSelected (repo) {
+      this.loading = true
+      this.selectedRepo = repo
+
+      try {
+        const latestCommits = await octokit.request('GET /repos/{owner}/{repo}/commits?author={username}', {
+          owner: repo.owner.login,
+          repo: repo.name,
+          username: this.username,
+        })
+        this.latestCommits = latestCommits.data
+      } catch (error) {
+        console.error(error)
+        this.latestCommits = []
+      }
 
       this.loading = false
-
-      // ToDo: tricks avec resize pour faire fonctionner la 3D direct ?
-
-    })
+    },
   },
 }
-
 </script>
+
 
 <style scoped>
 .info__data > div {
