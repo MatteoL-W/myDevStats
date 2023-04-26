@@ -10,7 +10,7 @@
           <div>
             <h2>{{ usernameGitHub }}</h2>
             <p v-show="user?.name !== null">{{ user?.name }}</p>
-            <p v-show="user?.blog !== ''">Web: <a :href="'http://' +  user?.blog">{{ user?.blog }}</a></p>
+            <p v-show="user?.blog !== ''">Web: <a :href="'https://' +  user?.blog">{{ user?.blog }}</a></p>
           </div>
         </div>
 
@@ -44,7 +44,7 @@ export default {
     }
   },
   created () {
-    const profileCache = sessionStorage.getItem(this.usernameGitHub + '_info')
+    const profileCache = localStorage.getItem(this.usernameGitHub + '_info')
     if (profileCache)
       this.loadCache(profileCache)
 
@@ -64,7 +64,7 @@ export default {
         return
       }
 
-      sessionStorage.setItem(this.usernameGitHub + '_info', JSON.stringify(response.data))
+      localStorage.setItem(this.usernameGitHub + '_info', JSON.stringify(response.data))
       this.$emit('userExists', { data: true })
       this.user = await response.data
     },
@@ -72,8 +72,7 @@ export default {
       this.user = JSON.parse(profileCache)
       this.$emit('userExists', { data: true })
     },
-  }
-  ,
+  },
 }
 </script>
 
