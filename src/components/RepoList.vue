@@ -1,16 +1,16 @@
 <template>
   <div class="repo__list">
-    <input type="text" placeholder="Search a repository" v-model="search" @keyup="sortBySearch(repositories)">
+    <input type="text" placeholder="Search a repository" v-model="search" @keyup="cleanSearchInput">
     <table>
       <tr>
-        <th v-for="(col, index) in columns" :key="index" @click="sortByProperty(col)"
-            :class="{ desc: col.key === activeColumn && sortOrder === 'desc', asc: col.key === activeColumn && sortOrder === 'asc' }">
-          {{ col.label }}
+        <th v-for="(column, index) in columns" :key="index" @click="sortByProperty(column)"
+            :class="{ desc: column.key === activeColumn && sortOrder === 'desc', asc: column.key === activeColumn && sortOrder === 'asc' }">
+          {{ column.label }}
         </th>
       </tr>
-      <tr v-for="repo in sortedRepositories" :key="repo.id" @click="selectRepo(repo)">
-        <td v-for="(col, index) in columns" :key="index">
-          {{ getValue(repo, col) }}
+      <tr v-for="repository in sortedRepositories" :key="repository.id" @click="selectRepo(repository)">
+        <td v-for="(column, index) in columns" :key="index">
+          {{ getValue(repository, column) }}
         </td>
       </tr>
     </table>
@@ -25,9 +25,9 @@ export default {
   props: ['repositories'],
   data: () => ({
     search: '',
-    sortedRepositories: [],
     activeColumn: 'updated_at',
-    sortOrder: 'asc',
+    sortOrder: 'desc',
+    // ToDo : Config pour responsive
     columns: [
       { key: 'name', label: 'Name', type: 'text' },
       { key: 'commitsNumber', label: 'Commits Number', type: 'int' },
@@ -37,30 +37,37 @@ export default {
       { key: 'created_at', label: 'Created at', type: 'date' },
     ],
   }),
+  computed: {
+    sortedRepositories () {
+      const sortFn = this.sortOrder === 'desc' ? this.descSort : this.ascSort
+      const sorted = [...this.repositories].sort((a, b) =>
+          sortFn(
+              this.getValue(a, this.selectedColumn, true),
+              this.getValue(b, this.selectedColumn, true),
+          ),
+      )
+
+      return this.search
+          ? sorted.filter(repository => repository.name.toLowerCase().
+              includes(this.search.toLowerCase()))
+          : sorted
+    },
+    selectedColumn () {
+      return this.columns.find(column => column.key === this.activeColumn) || this.columns[4]
+    },
+  },
   created () {
-    this.sortByProperty(this.columns[4])
+    this.activeColumn = this.selectedColumn.key
   },
   methods: {
-    selectRepo (repo) {
-      eventBus.emit('repo-selected', repo)
-    },
-    sortBySearch (array) {
-      this.sortedRepositories = array.filter((repo) =>
-          repo.name.toLowerCase().
-              includes(this.search.toLowerCase()),
-      )
-    },
+    ascSort (a, b) { return a > b ? 1 : -1 },
+    descSort (a, b) { return a > b ? -1 : 1 },
+
+    selectRepo (repository) { eventBus.emit('repo-selected', repository) },
+
+    cleanSearchInput () { this.search = this.search.trim() },
+
     sortByProperty (selectedColumn) {
-      this.updateSortType(selectedColumn)
-
-      const sortFn = this.sortOrder === 'desc' ? this.descSort : this.ascSort
-      this.sortedRepositories = [...this.repositories].sort((a, b) =>
-          sortFn(this.getValue(a, selectedColumn, true), this.getValue(b, selectedColumn, true)),
-      )
-
-      this.sortBySearch(this.sortedRepositories)
-    },
-    updateSortType (selectedColumn) {
       if (selectedColumn.key === this.activeColumn) {
         this.sortOrder = this.sortOrder === 'desc' ? 'asc' : 'desc'
       } else {
@@ -68,43 +75,29 @@ export default {
         this.sortOrder = 'desc'
       }
     },
-    getValue (repo, column, toCompare = false) {
+
+    // Sometimes, we want the value to display it or to compare it.
+    // We don't want the same value depending on these two.
+    getValue (repository, column, toCompare = false) {
       switch (column.type) {
         case 'date':
-          return toCompare ? new Date(repo[column.key]) : new Date(repo[column.key]).toLocaleString()
+          return toCompare ? new Date(repository[column.key]) : new Date(repository[column.key]).toLocaleString()
 
         case 'text':
-          return toCompare ? repo[column.key]?.toUpperCase() : repo[column.key]
+          return toCompare ? repository[column.key]?.toUpperCase() : repository[column.key]
 
         case 'int':
-          return parseInt(repo[column.key] ?? 0)
+          return parseInt(repository[column.key] ?? 0)
 
         default:
-          return repo[column.key]
+          return repository[column.key]
       }
-    },
-    ascSort (a, b) {
-      return a > b ? 1 : -1
-    },
-    descSort (a, b) {
-      return a > b ? -1 : 1
-    },
-  },
-  watch: {
-    repositories: {
-      handler () {
-        this.sortByProperty(this.activeColumn)
-      },
-      deep: true,
     },
   },
 }
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/scss/variables.scss';
-
-
 input {
   border: 0;
   outline: 0;
