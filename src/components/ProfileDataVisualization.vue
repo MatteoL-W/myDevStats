@@ -1,5 +1,8 @@
 <template>
-  <div class="info__data" ref="threejs">
+  <div class="info__data">
+    <div v-show="loading">
+      <LoadingIcon></LoadingIcon>
+    </div>
     <Renderer ref="renderer" antialias orbit-ctrl resize="true" alpha>
       <Camera :position="{ z: 11, y: 3 }"></Camera>
       <Scene ref="scene">
@@ -50,11 +53,14 @@
 <script>
 import { eventBus } from '@/utils/event-bus-profile.js'
 import { octokit } from '@/services/api/octokit'
+import LoadingIcon from '@/components/LoadingIcon.vue'
 
 export default {
   name: 'ProfileDataVisualization',
+  components: { LoadingIcon },
   data () {
     return {
+      loading: false,
       selectedRepo: null,
       latestCommits: [],
       sortedCommits: [],
@@ -64,8 +70,10 @@ export default {
   props: {
     username: { type: String, required: true },
   },
-  async mounted () {
+  async created () {
     eventBus.on('repo-selected', async repo => {
+      this.loading = true
+
       this.sortedCommits = []
       this.selectedRepo = repo
 
@@ -86,6 +94,11 @@ export default {
         this.maxCommits = (dateLine?.commits > this.maxCommits) ? dateLine.commits : this.maxCommits
       })
       this.sortedCommits.reverse()
+
+      this.loading = false
+
+      // ToDo: tricks avec resize pour faire fonctionner la 3D direct ?
+
     })
   },
 }
@@ -93,5 +106,9 @@ export default {
 </script>
 
 <style scoped>
-
+.info__data > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>
