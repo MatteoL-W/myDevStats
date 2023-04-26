@@ -1,18 +1,18 @@
 <template>
   <div>
-    <p><span>{{usernameGitHub}}</span> user not found, please try again</p>
+    <p><span>{{ usernameGitHub }}</span> user not found, please try again</p>
     <SearchBar></SearchBar>
   </div>
 </template>
 
 <script>
-import SearchBar from "@/components/ProfileSearchBar.vue";
+import SearchBar from '@/components/ProfileSearchBar.vue'
 
 export default {
-  name: "ErrorComponent",
-  components: {SearchBar},
+  name: 'InvalidUserComponent',
+  components: { SearchBar },
   props: {
-    usernameGitHub: {type: String, required: true},
+    usernameGitHub: { type: String, required: true },
   },
 }
 </script>
