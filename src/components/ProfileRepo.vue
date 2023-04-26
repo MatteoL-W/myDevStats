@@ -20,6 +20,7 @@ export default {
   props: {
     usernameGitHub: { type: String, required: true },
   },
+
   data: () => {
     return {
       repositories: [],
@@ -27,29 +28,45 @@ export default {
       moreReposLoading: false,
     }
   },
-  created () {
-    const repositoriesCache = sessionStorage.getItem(this.usernameGitHub + '_repositories')
-    if (repositoriesCache)
-      this.loadCache(repositoriesCache)
 
-    else
-      this.retrieveUserRepos()
+  computed: {
+    repositoriesCacheKey () {
+      return `${this.usernameGitHub}_repositories`
+    },
+    pageCacheKey () {
+      return `${this.usernameGitHub}_page`
+    },
   },
+
+  created () {
+    this.loadRepos()
+  },
+
   methods: {
+    loadRepos () {
+      const repositoriesCache = sessionStorage.getItem(this.repositoriesCacheKey)
+      if (repositoriesCache)
+        this.loadCache(repositoriesCache)
+
+      else
+        this.retrieveUserRepos()
+    },
+
     async loadCache (repositoriesCache) {
       this.moreReposLoading = true
       this.repositories = JSON.parse(repositoriesCache)
-      this.pageLoaded = sessionStorage.getItem(this.usernameGitHub + '_page')
+      this.pageLoaded = sessionStorage.getItem(this.pageCacheKey)
       this.moreReposLoading = false
     },
+
     async retrieveUserRepos () {
       this.moreReposLoading = true
       this.pageLoaded++
-      sessionStorage.setItem(this.usernameGitHub + '_page', this.pageLoaded)
+      sessionStorage.setItem(this.pageCacheKey, this.pageLoaded)
 
       const response = await retrieveUserRepos(this.usernameGitHub, this.pageLoaded)
       this.repositories.push(...response)
-      sessionStorage.setItem(this.usernameGitHub + '_repositories', JSON.stringify(this.repositories))
+      sessionStorage.setItem(this.repositoriesCacheKey, JSON.stringify(this.repositories))
       this.moreReposLoading = false
     },
   },
