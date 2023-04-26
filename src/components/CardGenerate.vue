@@ -12,8 +12,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/scss/variables.scss';
-
 .info__cards-generate {
   background: #C0C0C0;
   border-radius: $cardBorderRadius;

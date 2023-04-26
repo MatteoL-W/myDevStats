@@ -7,24 +7,22 @@
 
 <script>
 export default {
-  name: "SearchBar",
+  name: 'SearchBar',
   data: () => {
     return {
       searchbar: null,
     }
   },
   methods: {
-    async handleSubmit() {
-      await this.$router.push({path: `/${this.searchbar}`})
+    async handleSubmit () {
+      await this.$router.push({ path: `/${this.searchbar}` })
       this.$router.go(0)
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/scss/variables.scss';
-
 form {
   display: flex;
   justify-content: space-between;

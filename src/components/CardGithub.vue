@@ -28,8 +28,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/scss/variables.scss';
-
 .info__cards-github {
   a {
     color: black;

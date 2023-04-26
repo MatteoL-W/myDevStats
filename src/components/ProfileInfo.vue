@@ -62,8 +62,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/scss/variables.scss';
-
 .info {
   display: grid;
   grid-template-columns: 3fr 2fr;
