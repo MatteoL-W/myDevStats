@@ -1,28 +1,9 @@
 <template>
-  <div class="info">
+  <div class="info" v-if="userExistsData">
     <ProfileDataVisualization :username="usernameGitHub"></ProfileDataVisualization>
     <div class="info__cards">
-      <!-- ToDo: In component -->
-      <div class="info__cards-github">
-
-        <div class="top">
-          <img :src="user?.avatar_url" alt="{{usernameGitHub}}">
-          <div>
-            <h2>{{ usernameGitHub }}</h2>
-            <p v-show="user?.name !== null">{{ user?.name }}</p>
-            <p v-show="user?.blog !== ''">Web: <a :href="'https://' +  user?.blog">{{ user?.blog }}</a></p>
-          </div>
-        </div>
-
-        <div class="bottom">
-          <p v-show="user?.bio !== null">{{ user?.bio }}</p>
-          <p>GitHub: <a :href="user?.html_url">{{ user?.html_url }}</a></p>
-          <p>{{ user?.followers }} followers · {{ user?.following }} following</p>
-        </div>
-      </div>
-
-      <!-- ToDo: In component -->
-      <a class="info__cards-generate" :href="usernameGitHub + '/card'">Generate GitHub Card</a>
+      <CardGithub :usernameGitHub="usernameGitHub" :user="user"/>
+      <CardGenerate :username-git-hub="usernameGitHub"/>
     </div>
   </div>
 </template>
@@ -30,10 +11,12 @@
 <script>
 import { octokit } from '@/services/api/octokit'
 import ProfileDataVisualization from '@/components/ProfileDataVisualization.vue'
+import CardGithub from '@/components/CardGithub.vue'
+import CardGenerate from '@/components/CardGenerate.vue'
 
 export default {
   name: 'ProfileInfo',
-  components: { ProfileDataVisualization },
+  components: { CardGenerate, CardGithub, ProfileDataVisualization },
   props: {
     usernameGitHub: { type: String, required: true },
   },
@@ -41,6 +24,7 @@ export default {
   data: () => {
     return {
       user: null,
+      userExistsData: true,
     }
   },
   created () {
@@ -61,6 +45,7 @@ export default {
         })
       } catch (error) {
         this.$emit('userExists', { data: false })
+        this.userExistsData = false
         return
       }
 
@@ -99,52 +84,6 @@ export default {
   &__cards {
     display: flex;
     flex-direction: column;
-
-    &-github {
-      a {
-        color: black;
-        text-decoration: underline;
-      }
-
-      background: white;
-      overflow: hidden;
-      border-radius: $cardBorderRadius;
-      box-shadow: $shadowDefault;
-
-      .top {
-        height: 100px;
-        display: flex;
-        background: #D9D9D9;
-
-        h2 {
-          display: inline-block;
-        }
-
-        > div {
-          padding: 15px 15px 15px 25px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-      }
-
-      .bottom {
-        padding: 30px;
-        line-height: 30px;
-      }
-    }
-
-    &-generate {
-      background: #C0C0C0;
-      border-radius: $cardBorderRadius;
-      box-shadow: $shadowDefault;
-      color: black;
-
-      font-weight: bold;
-      text-align: center;
-      padding: 20px;
-      margin-top: $spacing;
-    }
   }
 }
 
