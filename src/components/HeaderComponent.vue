@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <SearchBar></SearchBar>
-    <h1 v-text="'<myDevStats>'"></h1>
+    <a href="/">
+      <h1 v-text="'<myDevStats>'"></h1>
+    </a>
   </div>
 </template>
 
@@ -15,6 +17,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+a {
+  color: black;
+}
+
 .header {
   width: 100%;
 
