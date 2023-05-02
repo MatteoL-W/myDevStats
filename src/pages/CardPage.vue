@@ -78,9 +78,9 @@ export default {
       if (cache)
         this.repositories = JSON.parse(cache)
       else
-        this.repositories = this.fetchRepositories()
-
+        this.repositories = await this.fetchRepositories()
     },
+    
     async fetchRepositories () {
       const response = await retrieveUserRepos(this.usernameGitHub, 0, 30)
       sessionStorage.setItem(this.usernameGitHub + '_30repositories', JSON.stringify(response))
