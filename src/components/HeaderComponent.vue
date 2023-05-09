@@ -1,9 +1,9 @@
 <template>
   <div class="header">
     <SearchBar></SearchBar>
-    <a href="/">
+    <router-link to="/">
       <h1 v-text="'<myDevStats>'"></h1>
-    </a>
+    </router-link>
   </div>
 </template>
 

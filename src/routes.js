@@ -16,6 +16,7 @@ const routes = [
     path: '/:usernameGitHub/card',
     component: CardPage,
     props: true,
+    name: 'card',
   },
 ]
 

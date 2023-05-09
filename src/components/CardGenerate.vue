@@ -1,6 +1,11 @@
 <template>
-  <a class="info__cards-generate" :href="'/' + usernameGitHub + '/card'">Generate GitHub Card</a>
+  <router-link class="info__cards-generate" :to="{
+    name: 'card',
+    params: { usernameGitHub: usernameGitHub }
+  }">Generate GitHub Card
+  </router-link>
 </template>
+
 
 <script>
 export default {
