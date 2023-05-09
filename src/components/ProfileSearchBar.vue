@@ -15,7 +15,8 @@ export default {
   },
   methods: {
     async handleSubmit () {
-      await this.$router.push({ path: `/${this.searchbar}` })
+      const searchValue = this.searchbar ?? ''
+      await this.$router.push({ path: `/${searchValue}` })
       this.$router.go(0)
     },
   },
