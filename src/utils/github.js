@@ -34,6 +34,7 @@ const retrieveUserRepos = async (username, page, perPage = 5) => {
     'GET /users/{username}/repos?type=all&sort=pushed&per_page={perPage}&page={page}',
     { username, page, perPage },
   )
+  console.log(response)
   let repositories = response.data
   await retrieveCommitsNumber(repositories, username)
   return repositories
