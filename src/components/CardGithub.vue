@@ -3,7 +3,7 @@
     <div class="top">
       <img :src="user?.avatar_url" alt="{{usernameGitHub}}">
       <div>
-        <h2>{{ usernameGitHub }}</h2>
+        <h2>{{ user?.login }}</h2>
         <p v-show="user?.name !== null">{{ user?.name }}</p>
         <p v-show="user?.blog !== ''">Web: <a :href="'https://' +  user?.blog">{{ user?.blog }}</a></p>
       </div>
