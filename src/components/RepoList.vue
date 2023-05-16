@@ -1,6 +1,6 @@
 <template>
   <div class="repo__list">
-    <input type="text" placeholder="Search a repository" v-model="search" @keyup="cleanSearchInput">
+    <RepoSearchBar @searchValue="updateSearchValue"/>
     <table>
       <tr>
         <th v-for="(column, index) in columns" :key="index" @click="sortByProperty(column)"
@@ -19,9 +19,11 @@
 
 <script>
 import { eventBus } from '@/utils/event-bus-profile.js'
+import RepoSearchBar from '@/components/RepoSearchBar.vue'
 
 export default {
   name: 'RepoList',
+  components: { RepoSearchBar },
   props: ['repositories'],
   data: () => ({
     search: '',
@@ -75,12 +77,11 @@ export default {
   },
 
   methods: {
+    updateSearchValue (newValue) { this.search = newValue.data },
     ascSort (a, b) { return a > b ? 1 : -1 },
     descSort (a, b) { return a > b ? -1 : 1 },
 
     selectRepo (repository) { eventBus.emit('repo-selected', repository) },
-
-    cleanSearchInput () { this.search = this.search.trim() },
 
     sortByProperty (selectedColumn) {
       if (selectedColumn.key === this.activeColumn) {
@@ -113,19 +114,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-input {
-  border: 0;
-  outline: 0;
-  background: #EFEFEF;
-  border-radius: $inputBorderRadius;
-  outline: none;
-  font-style: italic;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  padding: 10px;
-  width: 100%;
-}
-
 table {
   border-spacing: 10px;
   width: 100%;
