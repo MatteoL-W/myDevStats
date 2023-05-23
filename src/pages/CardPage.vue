@@ -7,7 +7,7 @@
 <script>
 import HeaderComponent from '@/components/HeaderComponent.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
-import CardComponent from '@/pages/CardComponent.vue'
+import CardComponent from '@/components/CardComponent.vue'
 
 export default {
   name: 'CardPage',

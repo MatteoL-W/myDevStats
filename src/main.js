@@ -15,3 +15,8 @@ createApp(App).
   use(TroisJSVuePlugin).
   use(VueApexCharts).
   mount('#app')
+
+router.beforeEach((to, from, next) => {
+    document.title = to.meta.title ? to.meta.title + ' - myDevStats' : 'Weird Page - myDevStats'
+    next()
+})

@@ -6,17 +6,20 @@ const routes = [
   {
     path: '/',
     component: HomePage,
+    meta: { title: 'Home' }
   },
   {
     path: '/:usernameGitHub',
     component: ProfilePage,
     props: true,
+    meta: { title: `Profiles` }
   },
   {
     path: '/:usernameGitHub/card',
     component: CardPage,
     props: true,
     name: 'card',
+    meta: { title: `Card` }
   },
 ]
 
