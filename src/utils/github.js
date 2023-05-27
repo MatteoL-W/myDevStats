@@ -27,7 +27,15 @@ const retrieveCommitsNumber = async (repositories, author) => {
     }
 }
 
-const retrieveUserRepos = async (username, page, perPage = 5) => {
+export const retrieveUserRepos = async (username, page, perPage = 5) => {
+    const response = await octokit.request(
+        'GET /users/{username}/repos?type=all&sort=pushed&per_page={perPage}&page={page}',
+        {username, page, perPage},
+    )
+    return response.data
+}
+
+const retrieveUserReposWithCommitsCount = async (username, page, perPage = 5) => {
     const response = await octokit.request(
         'GET /users/{username}/repos?type=all&sort=pushed&per_page={perPage}&page={page}',
         {username, page, perPage},
@@ -37,4 +45,4 @@ const retrieveUserRepos = async (username, page, perPage = 5) => {
     return repositories
 }
 
-export {countCommits, retrieveUserRepos, retrieveCommitsNumber}
+export {countCommits, retrieveUserReposWithCommitsCount, retrieveCommitsNumber}

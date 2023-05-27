@@ -11,7 +11,7 @@
 
 <script>
 import RepoList from '@/components/RepoList.vue'
-import { retrieveUserRepos } from '@/utils/github'
+import { retrieveUserReposWithCommitsCount } from '@/utils/github'
 import LoadingIcon from '@/components/LoadingIcon.vue'
 
 export default {
@@ -64,7 +64,7 @@ export default {
       this.pageLoaded++
       sessionStorage.setItem(this.pageCacheKey, this.pageLoaded)
 
-      const response = await retrieveUserRepos(this.usernameGitHub, this.pageLoaded)
+      const response = await retrieveUserReposWithCommitsCount(this.usernameGitHub, this.pageLoaded)
       this.repositories.push(...response)
       sessionStorage.setItem(this.repositoriesCacheKey, JSON.stringify(this.repositories))
       this.moreReposLoading = false
